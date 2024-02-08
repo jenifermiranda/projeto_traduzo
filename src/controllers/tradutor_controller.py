@@ -7,15 +7,6 @@ tradutor_controller = Blueprint("tradutor_controller", __name__)
 
 
 @tradutor_controller.route("/", methods=["GET", "POST"])
-# def index():
-#     return render_template(
-#         "index.html",
-#         languages=LanguageModel.list_dicts(),
-#         text_to_translate="O que deseja traduzir?",
-#         translate_from="pt",
-#         translate_to="en",
-#         translated="What do you want to translate?",
-#     )
 def index():
     this_text = request.form.get("text-to-translate")
     acronym_from = request.form.get("translate-from")
@@ -46,4 +37,22 @@ def index():
             if request.method == "POST" and this_text is not None
             else "What do you want to translate?"
         ),
+    )
+
+
+@tradutor_controller.route("/reverse", methods=["POST"])
+def index_reverse():
+    this_text = request.form.get("text-to-translate")
+    acronym_from = request.form.get("translate-from")
+    acronym_to = request.form.get("translate-to")
+
+    return render_template(
+        "index.html",
+        languages=LanguageModel.list_dicts(),
+        text_to_translate=GoogleTranslator(
+            source=acronym_from, target=acronym_to
+        ).translate(this_text),
+        translate_from=request.form.get("translate-to"),
+        translate_to=request.form.get("translate-from"),
+        translated=request.form.get("text-to-translate"),
     )
