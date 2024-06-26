@@ -32,9 +32,7 @@ def index():
     return render_template(
         "index.html",
         languages=LanguageModel.list_dicts(),
-        text_to_translate=(
-            this_text if request.method == "POST" else "O que deseja traduzir?"
-        ),
+        text_to_translate=(this_text if request.method == "POST" else ""),
         translate_from=(acronym_from if request.method == "POST" else "pt"),
         translate_to=(acronym_to if request.method == "POST" else "en"),
         translated=translated,
